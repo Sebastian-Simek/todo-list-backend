@@ -26,6 +26,15 @@ describe('backend-express-template routes', () => {
       email,
       username
     });
-    
+  });
+  it('POST /users/sessions should log in a user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'testUser@user.com', password: '123456' });
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      message: 'Signed in successfully!'
+    });
   });
 });
