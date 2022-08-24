@@ -13,9 +13,9 @@ CREATE TABLE users (
 CREATE TABLE tasks (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id BIGINT,
-    completed BOOLEAN NOT NULL DEFAULT(false),
     task_name VARCHAR NOT NULL,
     description VARCHAR,
+    completed BOOLEAN NOT NULL DEFAULT(false),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES users(id)
 )
