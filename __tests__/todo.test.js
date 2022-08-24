@@ -30,7 +30,6 @@ describe('backend-express-template routes', () => {
     const newTask = { 
       taskName: 'complete this project',
       description: 'I sure hope this makes more sense soon',
-      completed: false,
     };
     const res = await agent
       .post('/api/v1/tasks')
@@ -40,7 +39,8 @@ describe('backend-express-template routes', () => {
       id: expect.any(String),
       taskName: newTask.taskName,
       description: newTask.description,
-      completed: newTask.completed
+      completed: false,
+      userId: expect.any(String)
     });
   });
 
