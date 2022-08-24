@@ -64,5 +64,12 @@ describe('backend-express-template routes', () => {
       message: 'Signed in successfully!'
     });
   });
+
+  it('DELETE /users/sessions should delete cookie', async () => {
+    const agent = request.agent(app);
+    await registerAndLogin(agent, mockUser);
+    const res = await agent.delete('/api/v1/users/sessions');
+    expect(res.status).toBe(204);
+  });
   
 });
