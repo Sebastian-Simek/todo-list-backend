@@ -21,10 +21,12 @@ describe('backend-express-template routes', () => {
     const res = await request(app).post('/api/v1/users').send(mockUser);
     const { email, username } = mockUser;
     expect(res.status).toBe(200);
+    console.log('res.body', res.body);
     expect(res.body).toEqual({
-      id: expect.any(String),
-      email,
-      username
+      message: 'Signed in successfully!',
+      newUser: { id: expect.any(String),
+        email,
+        username }
     });
   });
   it('POST /users/sessions should log in a user', async () => {
