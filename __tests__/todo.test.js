@@ -89,7 +89,6 @@ describe('backend-express-template routes', () => {
     const taskResponse = await agent.post('/api/v1/tasks').send(newTask);
     await agent.delete(`/api/v1/tasks/${taskResponse.body.id}`);
     const res = await agent.get('/api/v1/tasks');
-    console.log('res', res.body);
     expect(res.body).toEqual(null);
 
   });
