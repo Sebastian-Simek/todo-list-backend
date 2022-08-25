@@ -56,15 +56,30 @@ describe('backend-express-template routes', () => {
       .send(newTask);
     const res = await agent.get('/api/v1/tasks');
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({
+    expect(res.body).toEqual([{
       id: expect.any(String),
       taskName: newTask.taskName,
       description: newTask.description,
       completed: false,
       userId: expect.any(String)
-    });
-
+    }]);
   });
+
+  it.only('UPDATE should update a task to complete', async () => {
+    const agent = await request.agent(app);
+    await registerAndLogin(agent, mockUser);
+    const newTask = { 
+      taskName: 'complete this project',
+      description: 'I sure hope this makes more sense soon',
+    };
+    const taskResponse = await agent.post('/api/v1/tasks').send(newTask);
+    const res = await agent
+      .put(`/api/v1/tasks/${taskResponse.body.id}`)
+      .send({ completed: true });
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ ...taskResponse.body, completed: true });
+  });
+
 
 
 });
