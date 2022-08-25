@@ -18,6 +18,13 @@ describe('backend-express-template routes', () => {
     password: '123456',
     username: 'testUsers'
   };
+
+  const newTask = { 
+    taskName: 'complete this project',
+    description: 'I sure hope this makes more sense soon',
+  };
+
+
   const registerAndLogin = async (agent, user)  => {
     const res = await agent.post('/api/v1/users').send(user);
     expect(res.status).toBe(200);
@@ -65,13 +72,9 @@ describe('backend-express-template routes', () => {
     }]);
   });
 
-  it.only('UPDATE should update a task to complete', async () => {
+  it('UPDATE should update a task to complete', async () => {
     const agent = await request.agent(app);
     await registerAndLogin(agent, mockUser);
-    const newTask = { 
-      taskName: 'complete this project',
-      description: 'I sure hope this makes more sense soon',
-    };
     const taskResponse = await agent.post('/api/v1/tasks').send(newTask);
     const res = await agent
       .put(`/api/v1/tasks/${taskResponse.body.id}`)
@@ -80,6 +83,16 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual({ ...taskResponse.body, completed: true });
   });
 
+  it('DELETE should delete a task', async () => {
+    const agent = await request.agent(app);
+    await registerAndLogin(agent, mockUser);
+    const taskResponse = await agent.post('/api/v1/tasks').send(newTask);
+    await agent.delete(`/api/v1/tasks/${taskResponse.body.id}`);
+    const res = await agent.get('/api/v1/tasks');
+    console.log('res', res.body);
+    expect(res.body).toEqual(null);
+
+  });
 
 
 });
